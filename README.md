@@ -1,62 +1,85 @@
-# kc_llm_wiki_starter
+# kc_llm_wiki_starter — Your AI Maintains the Wiki, You Just Feed It
 
-Clone 回去、餵資料，你就有自己的 **LLM-maintained wiki**。
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Markdown](https://img.shields.io/badge/Markdown-Native-083fa1.svg)](https://commonmark.org/)
+[![Karpathy LLM Wiki](https://img.shields.io/badge/Pattern-Karpathy_LLM_Wiki-purple.svg)](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 
-基於 [Karpathy 2026-04 LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 的 production-ready template — 三層架構（raw sources / wiki pages / schema config）+ journal 本地 extension + frontmatter convention + lint hygiene。
+[正體中文](README_zh.md)
 
-## 為何用這個而不是 Obsidian / Notion / Confluence
+You know that knowledge base you "started organizing properly" three times last year? Yeah. This one's different — because the one maintaining it isn't you.
 
-- **LLM 維護成本近零**：LLM 不會忘記更新 cross-ref、不會厭倦做 bookkeeping
-- **三層明確分工**：raw = 真實來源、wiki = LLM 整理、schema = 結構規則
-- **Git native**：版本控制、diff、可 git-crypt 加密
-- **無 vendor lock-in**：純 markdown，明天換 LLM / 換 tool 都帶走
+Production-ready template based on [Andrej Karpathy's 2026-04 LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). Three-tier architecture (raw / wiki / schema) plus a journal layer extension. Clone it, feed it docs, let the LLM do the bookkeeping humans always abandon.
 
-## 快速開始
+## Why not just use Obsidian / Notion / Confluence
+
+Those tools assume **you** maintain the knowledge base. Cross-references, summaries, contradictions, missing pages — somebody has to keep it consistent. Humans give up around page 50.
+
+LLMs don't give up. This template is the structure that lets them help.
+
+- **LLM maintenance cost ≈ zero**: no fatigue from updating cross-refs, no skipping bookkeeping
+- **Three tiers, clean separation**: raw = source of truth, wiki = LLM's organized output, schema = the rules
+- **Git native**: version control, diff, optional git-crypt encryption
+- **No vendor lock-in**: pure markdown — switch LLMs or tools tomorrow, take your wiki with you
+
+## Quick Start
 
 ```bash
 git clone https://github.com/YOUR/kc_llm_wiki_starter.git my-wiki
 cd my-wiki
 ```
 
-1. 改 `CLAUDE.md` / `README.md` 的 `{{ your-wiki-name }}` placeholder
-2. 看 `wiki/_example_entity.md` 跟 `wiki/_example_overview.md` 學 frontmatter 格式
-3. 砍 example 或保留當 template reference（底線前綴標示 non-real）
-4. 開 Claude session，對 agent 說「ingest raw/xxx.md 到 wiki」→ 詳 [docs/getting-started.md](docs/getting-started.md)
+1. Replace `{{ your-wiki-name }}` placeholders in `CLAUDE.md` / `README.md` / `index.md` / `log.md`
+2. Read `wiki/_example_entity.md` and `wiki/_example_overview.md` to learn the frontmatter convention
+3. Delete examples (`git rm wiki/_example_*.md`) or keep them as reference
+4. Open a Claude session, drop a doc into `raw/`, and say "ingest this into wiki"
 
-## 核心概念（30 秒版）
+Full walkthrough: [docs/getting-started.md](docs/getting-started.md)
+
+## Core Concepts (30-second version)
 
 ```
-raw/     ← 外部 dump（gitignored，不進 git）
-wiki/    ← LLM 整理的主題頁（frontmatter + body）
-journal/ ← 時序工作日誌（daily / meeting / checklist）
-SCHEMA.md, log.md, index.md  ← meta 層
+raw/     ← External dumps (gitignored, not in git)
+wiki/    ← LLM-maintained topic pages (frontmatter + body)
+journal/ ← Temporal work logs (daily / meeting / checklist)
+SCHEMA.md, log.md, index.md  ← meta layer
 ```
 
-**三個 workflow**：
-1. **Ingest**：新 raw doc → agent 跟你對焦關鍵 → 去敏後寫進 wiki → 更新 index + log
-2. **Query**：問 agent → 他讀 index 決定查哪頁 → 讀 wiki → 回答含 citation
-3. **Lint**：定期跑 `/llm-wiki-lint` → 抓 stale / orphan / missing / data gap
+**Three workflows**:
 
-詳見 [docs/workflow.md](docs/workflow.md)。
+1. **Ingest**: feed raw doc → agent confirms key points with you → writes to wiki → updates index + log
+2. **Query**: ask agent → reads index → reads wiki → answers with citations
+3. **Lint**: run `/llm-wiki-lint` periodically → catches stale claims, orphan pages, missing topics, data gaps
 
-## 搭配 Skill
+Detailed: [docs/workflow.md](docs/workflow.md)
 
-推薦搭配 [`kc_ai_skills/llm-wiki-lint`](https://github.com/KerberosClaw/kc_ai_skills/tree/main/llm-wiki-lint)：
+## Companion skill
 
-**為何需要**：wiki 超過 ~15 頁之後，stale claims（內文 vs raw 脫節）、orphan cross-refs（頁面孤立）、missing topic pages（應有但缺）、data gaps（`sources` 指向消失的 raw）會**默默腐爛**。LLM 自己不會發現，你讀到才會炸。llm-wiki-lint 每週跑一次抓 drift，讓 LLM 不會哪天自信地搬錯 fact 打臉你。
+[`kc_ai_skills/llm-wiki-lint`](https://github.com/KerberosClaw/kc_ai_skills/tree/main/llm-wiki-lint) — because once your wiki passes ~15 pages, stale claims, broken cross-refs, and missing topics start rotting silently. Humans don't catch this. The lint skill does.
 
-**Install**：
+This template's `CLAUDE.md` already includes a session-start hygiene check — your agent will remind you to run lint when it's been more than 14 days since the last one.
+
+**Install**:
+
 ```bash
-# 參考 kc_ai_skills README
+git clone https://github.com/KerberosClaw/kc_ai_skills.git
 cp -r kc_ai_skills/llm-wiki-lint ~/.claude/skills/
 ```
 
+## Security Notice
+
+This template ships with **no actual data, credentials, or external dependencies** — it's just markdown scaffolding. That said:
+
+- **Your `raw/` folder is gitignored** by design. But anything you put there lives on your local disk — plan your own backup / sync strategy.
+- **Commit messages are NOT encrypted by git-crypt**, even if you enable it. Keep sensitive entity names out of commit messages.
+- **External LLM APIs**: when your agent ingests / queries, content is sent to whichever LLM you use (Claude, GPT, etc.). Apply your own data classification policy before feeding sensitive material.
+- **Report security issues**: open a GitHub issue (this template repo is intended for non-sensitive content).
+
 ## Documentation
 
-- [docs/getting-started.md](docs/getting-started.md) — 5 分鐘第一次 ingest
-- [docs/workflow.md](docs/workflow.md) — Ingest / Query / Lint 詳細流程
-- [docs/extensions.md](docs/extensions.md) — 客製化方向（journal layer、frontmatter 擴展、工具整合）
+- [docs/getting-started.md](docs/getting-started.md) — 5-minute first ingest
+- [docs/workflow.md](docs/workflow.md) — Ingest / Query / Lint deep dive
+- [docs/extensions.md](docs/extensions.md) — Customization (journal layer, frontmatter extensions, tool integrations)
 
 ## License
 
-MIT — 見 [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE).
