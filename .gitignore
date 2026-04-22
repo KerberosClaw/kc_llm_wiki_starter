@@ -1,0 +1,19 @@
+.DS_Store
+*.swp
+*.tmp
+node_modules/
+__pycache__/
+.venv/
+venv/
+*.log
+.env
+.env.local
+
+# Raw 層整個 gitignored（外部 immutable copy，不進 git）
+raw/
+!raw/README.md
+!raw/.gitkeep
+
+# Local-only 敏感版本
+*.local.*
+private/

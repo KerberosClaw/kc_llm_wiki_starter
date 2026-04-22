@@ -1,0 +1,16 @@
+# Optional: git-crypt 透明加密設定（若需要）
+#
+# Setup:
+#   1. brew install git-crypt  (or apt / yum 等)
+#   2. cp .gitattributes.example .gitattributes
+#   3. git-crypt init
+#   4. git-crypt add-gpg-user <your-email>
+#   (or export symmetric key: git-crypt export-key ~/path/to/key)
+#
+# 注意：
+# - commit message 不受 git-crypt 加密（filter 只管 blob 內容）
+# - rename / move 檔案不影響加密 filter（filter 按 glob pattern）
+# - 建議只在 private repo 用 git-crypt；public repo 無意義
+
+*.md filter=git-crypt diff=git-crypt
+*.csv filter=git-crypt diff=git-crypt
