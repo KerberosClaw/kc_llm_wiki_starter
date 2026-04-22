@@ -1,10 +1,12 @@
-# kc_llm_wiki_starter — AI 幫你養知識庫，你只要餵料
+# AI 幫你養知識庫，你只要餵料
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Markdown](https://img.shields.io/badge/Markdown-Native-083fa1.svg)](https://commonmark.org/)
 [![Karpathy LLM Wiki](https://img.shields.io/badge/Pattern-Karpathy_LLM_Wiki-purple.svg)](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 
 [English](README.md)
+
+![LLM Wiki v0.1 hero](docs/images/hero.png)
 
 你去年「這次要好好整理」了幾次的知識庫？對，這次不一樣 — 因為維護的人不是你。
 

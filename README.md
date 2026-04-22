@@ -1,10 +1,12 @@
-# kc_llm_wiki_starter — Your AI Maintains the Wiki, You Just Feed It
+# Your AI Maintains the Wiki, You Just Feed It
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Markdown](https://img.shields.io/badge/Markdown-Native-083fa1.svg)](https://commonmark.org/)
 [![Karpathy LLM Wiki](https://img.shields.io/badge/Pattern-Karpathy_LLM_Wiki-purple.svg)](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 
 [正體中文](README_zh.md)
+
+![LLM Wiki v0.1 hero](docs/images/hero.png)
 
 You know that knowledge base you "started organizing properly" three times last year? Yeah. This one's different — because the one maintaining it isn't you.
 
